@@ -1,6 +1,6 @@
 package org.demo.Models;
 
-public class Cliente {
+public class Persona {
     private static int contador = 1;
     private int id;
     private String nombre;
@@ -9,7 +9,7 @@ public class Cliente {
     private String direccion;
     private String correo;
 
-    public Cliente(String nombre, String documento, String telefono, String direccion, String correo) {
+    public Persona(String nombre, String documento, String telefono, String direccion, String correo) {
         this.id = contador++;
         this.documento = documento;
         this.direccion = direccion;
@@ -18,7 +18,7 @@ public class Cliente {
         this.correo = correo;
     }
 
-    public Cliente(){}
+    public Persona(){}
 
     public String getNombre() {
         return nombre;

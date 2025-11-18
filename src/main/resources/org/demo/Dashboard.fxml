@@ -41,7 +41,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onVerClientes" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #00BCD4; -fx-border-radius: 8;" text="Clientes">
+                        <Button mnemonicParsing="false" onAction="#onVerCitas" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #00BCD4; -fx-border-radius: 8;" text="Citas">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -52,7 +52,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onVerProductos" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #00BCD4; -fx-border-radius: 8;" text="Productos">
+                        <Button mnemonicParsing="false" onAction="#onVerMedicos" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #00BCD4; -fx-border-radius: 8;" text="Medicos">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -63,7 +63,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#onVerVentas" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #00BCD4; -fx-border-radius: 8;" text="Ventas">
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#onVerPacientes" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #00BCD4; -fx-border-radius: 8;" text="Pacientes">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -84,72 +84,47 @@
                    <children>
 
                        <!-- Contenedor central que mantiene los tres paneles centrados -->
-                       <VBox alignment="CENTER" spacing="60"
-                             AnchorPane.topAnchor="0.0"
-                             AnchorPane.bottomAnchor="0.0"
-                             AnchorPane.leftAnchor="0.0"
-                             AnchorPane.rightAnchor="0.0">
+                       <VBox alignment="CENTER" spacing="60" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
                            <!-- HBox para alinear los tres paneles en una fila -->
                            <HBox alignment="CENTER" spacing="100">
                                <!-- Panel Clientes -->
-                               <AnchorPane prefHeight="400.0" prefWidth="260.0"
-                                           style="-fx-border-color: black; -fx-background-color: white; -fx-border-radius: 6; -fx-background-radius: 6;">
+                               <AnchorPane prefHeight="400.0" prefWidth="260.0" style="-fx-border-color: black; -fx-background-color: white; -fx-border-radius: 6; -fx-background-radius: 6;">
                                    <children>
-                                       <Label alignment="CENTER" layoutX="6.0" layoutY="20.0"
-                                              prefHeight="30.0" prefWidth="225.0" text="Clientes:">
+                                       <Label alignment="CENTER" layoutX="6.0" layoutY="20.0" prefHeight="30.0" prefWidth="225.0" text="Pacientes:">
                                            <font><Font name="Trebuchet MS Bold" size="24.0" /></font>
                                        </Label>
-                                       <ImageView fitHeight="180.0" fitWidth="180.0"
-                                                  layoutX="40.0" layoutY="90.0"
-                                                  pickOnBounds="true" preserveRatio="true">
+                                       <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="40.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
                                            <image><Image url="@Images/clientes.png" /></image>
                                        </ImageView>
-                                       <Label fx:id="lblClientes" alignment="CENTER"
-                                              layoutX="40.0" layoutY="300.0"
-                                              prefHeight="80.0" prefWidth="180.0" text="0">
+                                       <Label fx:id="lblPacientes" alignment="CENTER" layoutX="40.0" layoutY="300.0" prefHeight="80.0" prefWidth="180.0" text="0">
                                            <font><Font name="Trebuchet MS" size="60.0" /></font>
                                        </Label>
                                    </children>
                                </AnchorPane>
 
                                <!-- Panel Productos -->
-                               <AnchorPane prefHeight="400.0" prefWidth="260.0"
-                                           style="-fx-border-color: black; -fx-background-color: white; -fx-border-radius: 6; -fx-background-radius: 6;">
+                               <AnchorPane prefHeight="400.0" prefWidth="260.0" style="-fx-border-color: black; -fx-background-color: white; -fx-border-radius: 6; -fx-background-radius: 6;">
                                    <children>
-                                       <Label alignment="CENTER" layoutX="6.0" layoutY="20.0"
-                                              prefHeight="30.0" prefWidth="225.0" text="Productos:">
+                                       <Label alignment="CENTER" layoutX="6.0" layoutY="20.0" prefHeight="30.0" prefWidth="225.0" text="Medicos:">
                                            <font><Font name="Trebuchet MS Bold" size="24.0" /></font>
                                        </Label>
-                                       <ImageView fitHeight="180.0" fitWidth="180.0"
-                                                  layoutX="40.0" layoutY="90.0"
-                                                  pickOnBounds="true" preserveRatio="true">
-                                           <image><Image url="@Images/productos.png" /></image>
-                                       </ImageView>
-                                       <Label fx:id="lblProductos" alignment="CENTER"
-                                              layoutX="40.0" layoutY="300.0"
-                                              prefHeight="80.0" prefWidth="180.0" text="0">
+                                       <Label fx:id="lblMedicos" alignment="CENTER" layoutX="40.0" layoutY="300.0" prefHeight="80.0" prefWidth="180.0" text="0">
                                            <font><Font name="Trebuchet MS" size="60.0" /></font>
                                        </Label>
                                    </children>
                                </AnchorPane>
 
                                <!-- Panel Ventas -->
-                               <AnchorPane prefHeight="400.0" prefWidth="260.0"
-                                           style="-fx-border-color: black; -fx-background-color: white; -fx-border-radius: 6; -fx-background-radius: 6;">
+                               <AnchorPane prefHeight="400.0" prefWidth="260.0" style="-fx-border-color: black; -fx-background-color: white; -fx-border-radius: 6; -fx-background-radius: 6;">
                                    <children>
-                                       <Label alignment="CENTER" layoutX="6.0" layoutY="20.0"
-                                              prefHeight="30.0" prefWidth="225.0" text="Ventas:">
+                                       <Label alignment="CENTER" layoutX="6.0" layoutY="20.0" prefHeight="30.0" prefWidth="225.0" text="Citas:">
                                            <font><Font name="Trebuchet MS Bold" size="24.0" /></font>
                                        </Label>
-                                       <ImageView fitHeight="180.0" fitWidth="180.0"
-                                                  layoutX="40.0" layoutY="90.0"
-                                                  pickOnBounds="true" preserveRatio="true">
-                                           <image><Image url="@Images/venta.png" /></image>
+                                       <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="40.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                                           <image><Image url="@Images/cita.png" /></image>
                                        </ImageView>
-                                       <Label fx:id="lblVentas" alignment="CENTER"
-                                              layoutX="40.0" layoutY="300.0"
-                                              prefHeight="80.0" prefWidth="180.0" text="0">
+                                       <Label fx:id="lblCitas" alignment="CENTER" layoutX="40.0" layoutY="300.0" prefHeight="80.0" prefWidth="180.0" text="0">
                                            <font><Font name="Trebuchet MS" size="60.0" /></font>
                                        </Label>
                                    </children>

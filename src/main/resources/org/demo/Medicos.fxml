@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/24.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.demo.Controllers.MedicosController"
+            AnchorPane.topAnchor="0.0"
+            AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0"
+            AnchorPane.rightAnchor="0.0">
+
+    <children>
+
+        <!-- === FORMULARIO DE MÉDICOS === -->
+        <AnchorPane AnchorPane.topAnchor="20.0"
+                    AnchorPane.leftAnchor="20.0"
+                    AnchorPane.rightAnchor="250.0"
+                    prefHeight="360.0"
+                    style="-fx-border-color: #BDC3C7; -fx-border-radius: 5;">
+            <children>
+
+                <GridPane hgap="20" vgap="20"
+                          AnchorPane.topAnchor="20.0"
+                          AnchorPane.leftAnchor="20.0"
+                          AnchorPane.rightAnchor="20.0">
+
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="25"/>
+                        <ColumnConstraints percentWidth="75"/>
+                    </columnConstraints>
+
+                    <!-- Nombre -->
+                    <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                        <font><Font size="16.0"/></font>
+                    </Label>
+                    <TextField fx:id="txtNombre" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                    <!-- Documento -->
+                    <Label text="Documento:" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                        <font><Font size="16.0"/></font>
+                    </Label>
+                    <TextField fx:id="txtDocumento" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                    <!-- Teléfono -->
+                    <Label text="Teléfono:" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                        <font><Font size="16.0"/></font>
+                    </Label>
+                    <TextField fx:id="txtTelefono" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                    <!-- Dirección -->
+                    <Label text="Dirección:" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                        <font><Font size="16.0"/></font>
+                    </Label>
+                    <TextField fx:id="txtDireccion" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                    <!-- Correo -->
+                    <Label text="Correo:" GridPane.rowIndex="4" GridPane.columnIndex="0">
+                        <font><Font size="16.0"/></font>
+                    </Label>
+                    <TextField fx:id="txtCorreo" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                    <!-- Especialidad -->
+                    <Label text="Especialidad:" GridPane.rowIndex="5" GridPane.columnIndex="0">
+                        <font><Font size="16.0"/></font>
+                    </Label>
+                    <TextField fx:id="txtEspecialidad" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+                    <!-- Consultorio -->
+                    <Label text="Consultorio:" GridPane.rowIndex="6" GridPane.columnIndex="0">
+                        <font><Font size="16.0"/></font>
+                    </Label>
+                    <TextField fx:id="txtConsultorio" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+
+                    <!-- Horario -->
+                    <Label text="Horario:" GridPane.rowIndex="7" GridPane.columnIndex="0">
+                        <font><Font size="16.0"/></font>
+                    </Label>
+                    <TextField fx:id="txtHorario" GridPane.rowIndex="7" GridPane.columnIndex="1" />
+
+                </GridPane>
+            </children>
+        </AnchorPane>
+
+        <!-- === BOTONES === -->
+        <VBox spacing="15"
+              AnchorPane.topAnchor="40.0"
+              AnchorPane.rightAnchor="40.0">
+            <children>
+
+                <Button text="Guardar"
+                        onAction="#onGuardarMedico"
+                        prefHeight="45.0" prefWidth="160.0"
+                        style="-fx-background-color: #2ECC71; -fx-background-radius: 8;">
+                    <cursor><Cursor fx:constant="HAND"/></cursor>
+                </Button>
+
+                <Button text="Eliminar"
+                        onAction="#onEliminarMedico"
+                        prefHeight="45.0" prefWidth="160.0"
+                        style="-fx-background-color: #E74C3C; -fx-background-radius: 8;">
+                    <cursor><Cursor fx:constant="HAND"/></cursor>
+                </Button>
+
+                <Button text="Actualizar"
+                        onAction="#onActualizarMedico"
+                        prefHeight="45.0" prefWidth="160.0"
+                        style="-fx-background-color: #3498DB; -fx-background-radius: 8;">
+                    <cursor><Cursor fx:constant="HAND"/></cursor>
+                </Button>
+
+                <Button text="Limpiar Campos"
+                        onAction="#onLimpiarCampos"
+                        prefHeight="45.0" prefWidth="160.0"
+                        style="-fx-background-color: #BDC3C7; -fx-background-radius: 8;">
+                    <cursor><Cursor fx:constant="HAND"/></cursor>
+                </Button>
+
+            </children>
+        </VBox>
+
+        <!-- === TABLA DE MÉDICOS === -->
+        <ScrollPane fitToHeight="true" fitToWidth="true"
+                    AnchorPane.leftAnchor="20.0"
+                    AnchorPane.rightAnchor="20.0"
+                    AnchorPane.bottomAnchor="20.0"
+                    AnchorPane.topAnchor="400.0">
+            <content>
+                <AnchorPane>
+                    <children>
+
+                        <TableView fx:id="tblMedicos"
+                                   AnchorPane.topAnchor="0.0"
+                                   AnchorPane.leftAnchor="0.0"
+                                   AnchorPane.rightAnchor="0.0"
+                                   AnchorPane.bottomAnchor="0.0">
+
+                            <columns>
+                                <TableColumn fx:id="colNombre" text="Nombre" prefWidth="150"/>
+                                <TableColumn fx:id="colDocumento" text="Documento" prefWidth="120"/>
+                                <TableColumn fx:id="colTelefono" text="Teléfono" prefWidth="120"/>
+                                <TableColumn fx:id="colDireccion" text="Dirección" prefWidth="150"/>
+                                <TableColumn fx:id="colCorreo" text="Correo" prefWidth="150"/>
+                                <TableColumn fx:id="colEspecialidad" text="Especialidad" prefWidth="150"/>
+                                <TableColumn fx:id="colConsultorio" text="Consultorio" prefWidth="120"/>
+                                <TableColumn fx:id="colHorario" text="Horario" prefWidth="150"/>
+                            </columns>
+
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+
+                        </TableView>
+
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+
+    </children>
+</AnchorPane>

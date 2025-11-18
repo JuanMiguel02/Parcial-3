@@ -102,10 +102,10 @@ sistema-gestion/
 ### Módulo de Productos
 - Crear, modificar o eliminar productos
 - Consultar inventario en tiempo real
-- Actualizar cantidad automáticamente tras cada venta
+- Actualizar cantidad automáticamente tras cada cita
 
 ### Módulo de Ventas
-- Registrar una venta seleccionando cliente y producto
+- Registrar una cita seleccionando cliente y producto
 - Calcular total automáticamente
 - Reducir existencias del producto vendido
 
@@ -161,7 +161,7 @@ Las imágenes utilizadas provienen de [Flaticon](https://www.flaticon.com) bajo 
 |:-----------------:|--------------------|-------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
 | **clientes.png**  | Icono de clientes  | [Gente de negocios – Kornkun (Flaticon)](https://www.flaticon.es/iconos-gratis/gente-de-negocios)     | [Licencia Flaticon](https://www.flaticon.com/license) |
 | **productos.png** | Icono de productos | [Producto iconos creados por HANIS - Flaticon](https://www.flaticon.es/iconos-gratis/producto)        | [Licencia Flaticon](https://www.flaticon.com/license) |
-|   **venta.png**   | Icono de venta     | [Garrapata iconos creados por Roundicons - Flaticon](https://www.flaticon.es/iconos-gratis/garrapata) | [Licencia Flaticon](https://www.flaticon.com/license) |
+|   **cita.png**   | Icono de cita     | [Garrapata iconos creados por Roundicons - Flaticon](https://www.flaticon.es/iconos-gratis/garrapata) | [Licencia Flaticon](https://www.flaticon.com/license) |
 
 
 

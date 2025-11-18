@@ -7,9 +7,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import org.demo.Repositories.ClienteRepository;
-import org.demo.Repositories.ProductoRepository;
-import org.demo.Repositories.VentaRepository;
+import org.demo.Repositories.CitaRepository;
+import org.demo.Repositories.MedicoRepository;
+import org.demo.Repositories.PacienteRepository;
+//import org.demo.Repositories.ProductoRepository;
+//import org.demo.Repositories.VentaRepository;
 
 import java.io.IOException;
 
@@ -24,9 +26,9 @@ public class DashboardController {
     @FXML private StackPane contenedorCentro;
     @FXML private AnchorPane vistaInicio;
 
-    @FXML private Label lblClientes;
-    @FXML private Label lblProductos;
-    @FXML private Label lblVentas;
+    @FXML private Label lblMedicos;
+    @FXML private Label lblCitas;
+    @FXML private Label lblPacientes;
 
     /**
      * Inicializa el dashboard.
@@ -35,14 +37,14 @@ public class DashboardController {
      */
     @FXML
     public void initialize(){
-        lblClientes.textProperty().bind(
-                Bindings.size(ClienteRepository.getInstancia().getClientes()).asString()
+        lblPacientes.textProperty().bind(
+                Bindings.size(PacienteRepository.getInstancia().getPacientes()).asString()
         );
-        lblProductos.textProperty().bind(
-                Bindings.size(ProductoRepository.getInstancia().getProductos()).asString()
+        lblCitas.textProperty().bind(
+                Bindings.size(CitaRepository.getInstancia().getCitas()).asString()
         );
-        lblVentas.textProperty().bind(
-                Bindings.size(VentaRepository.getInstancia().getVentas()).asString()
+        lblMedicos.textProperty().bind(
+                Bindings.size(MedicoRepository.getInstancia().getMedicos()).asString()
         );
     }
 
@@ -99,22 +101,22 @@ public class DashboardController {
      * Carga la vista de gestión de clientes en el panel central.
      */
     @FXML
-    private void onVerClientes(){
-        cargarVistaEnCentro("/org/demo/Clientes.fxml");
+    private void onVerCitas(){
+        cargarVistaEnCentro("/org/demo/Cita.fxml");
     }
 
     /**
      * Carga la vista de gestión de productos en el panel central.
      */
     @FXML
-    private void onVerProductos(){
-        cargarVistaEnCentro("/org/demo/Productos.fxml");
+    private void onVerMedicos(){
+        cargarVistaEnCentro("/org/demo/Medicos.fxml");
     }
 
     /**
      * Carga la vista de gestión de ventas en el panel central.
      */
-    @FXML private void onVerVentas(){
-        cargarVistaEnCentro("/org/demo/Ventas.fxml");
+    @FXML private void onVerPacientes(){
+        cargarVistaEnCentro("/org/demo/Pacientes.fxml");
     }
 }
