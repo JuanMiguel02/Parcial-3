@@ -77,6 +77,9 @@ public class CitasController {
     // idCita para edición de citas
     private String idCita = null;
 
+    private boolean bloqueado = false;
+
+
     @FXML
     public void initialize() {
         citaRepository = CitaRepository.getInstancia();
@@ -105,7 +108,7 @@ public class CitasController {
         cmbPacientes.setItems(pacienteRepository.getPacientes());
         cmbPacientes.valueProperty().addListener((obs, oldV, newV) -> cargarDatosPaciente(newV));
 
-        // Listeners para recargar médicos cuando cambie fecha u hora
+        // Listeners para recargar médicos cuando cambie fecha u hora, el controlador recalcula qué médicos están disponibles.
         dtFecha.valueProperty().addListener((obs, oldV, newV) -> cargarMedicosDisponibles());
         txtHora.textProperty().addListener((obs, oldV, newV) -> cargarMedicosDisponibles());
 
@@ -227,7 +230,7 @@ public class CitasController {
     //     MÉDICOS DISPONIBLES
     // ==========================================================
     private void cargarMedicosDisponibles() {
-
+        if (bloqueado) return;
         LocalDate fecha = dtFecha.getValue();
 
         LocalTime hora;
@@ -373,6 +376,8 @@ public class CitasController {
     }
 
     private void cargarDatosCita(Cita c) {
+        bloqueado = true; //
+
         idCita = String.valueOf(c.getId());
 
         cmbPacientes.setValue(c.getPaciente());
@@ -380,10 +385,16 @@ public class CitasController {
 
         dtFecha.setValue(c.getFecha());
         txtHora.setText(c.getHoraFormateada());
+
+        // Cargar lista completa de médicos (para incluir al que ya estaba asignado)
+        cmbMedicos.setItems(medicoRepository.getMedicos());
+        cmbMedicos.setValue(c.getMedico());
+
         txtMotivo.setText(c.getMotivo());
         txtPrecio.setText(String.valueOf(c.getPrecio()));
         txtObservaciones.setText(c.getObservaciones());
-        cmbMedicos.setValue(c.getMedico());
+
+        bloqueado = false; //
     }
 
     private void configurarValidaciones() {
