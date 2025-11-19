@@ -13,7 +13,7 @@ public class Launcher extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("Dashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 720);
         stage.setMaximized(true);
-        stage.setTitle("Sistema de Gestión de Ventas");
+        stage.setTitle("Sistema de Gestión de Citas Médicas");
         stage.setScene(scene);
         stage.show();
     }

@@ -135,19 +135,19 @@ public class MedicoRepository {
         Medico m1 = new Medico(
                 "Carlos López", "101234", "3101234567",
                 "Armenia", "carlos@hospital.com",
-                "Cardiología", "Consultorio 12", "8am - 2pm"
+                "Cardiología", "Consultorio 12"
         );
 
         Medico m2 = new Medico(
                 "María Pérez", "202345", "3119876543",
                 "Armenia", "maria@hospital.com",
-                "Pediatría", "Consultorio 5", "9am - 4pm"
+                "Pediatría", "Consultorio 5"
         );
 
         Medico m3 = new Medico(
                 "Juan Gómez", "303456", "3107654321",
                 "Armenia", "juan@hospital.com",
-                "Neurología", "Consultorio 8", "7am - 1pm"
+                "Neurología", "Consultorio 8"
         );
 
         guardarMedico(m1);

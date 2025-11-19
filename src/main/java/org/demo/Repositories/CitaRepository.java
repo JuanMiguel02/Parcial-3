@@ -55,18 +55,25 @@ public class CitaRepository {
     /**
      * Elimina una cita según su ID.
      */
-    public void eliminarCita(String idCita) {
-        citas.removeIf(c -> c.getId().equals(idCita));
+    public void eliminarCita(Cita cita) {
+        citas.remove(cita);
+    }
+
+    public void actualizarCita(Cita citaActualizada) {
+        for (int i = 0; i < citas.size(); i++) {
+            if (citas.get(i).getId().equals(citaActualizada.getId())) {
+                citas.set(i, citaActualizada); // reemplazar en la lista observable
+                return;
+            }
+        }
     }
 
     /**
      * Busca una cita por su ID.
      */
-    public Cita buscarCitaPorId(String idCita) {
+    public boolean existeCite(String idCita) {
         return citas.stream()
-                .filter(c -> c.getId().equals(idCita))
-                .findFirst()
-                .orElse(null);
+                .anyMatch(cita ->  cita.getId().equals(idCita));
     }
 
     /**
@@ -74,7 +81,7 @@ public class CitaRepository {
      */
     public boolean existeCitaEnHorario(Medico medico, LocalDate fecha, LocalTime hora, String idIgnorar) {
         return citas.stream().anyMatch(c ->
-                (idIgnorar == null || !c.getId().equals(idIgnorar)) &&
+                (!c.getId().equals(idIgnorar)) &&
                         c.getMedico().getId() == medico.getId() &&
                         c.getFecha().equals(fecha) &&
                         c.getHora().equals(hora)
@@ -87,22 +94,27 @@ public class CitaRepository {
      */
     private void cargarDatosEjemplo() {
 
-//        // Pacientes de ejemplo
-//        Paciente pa1 = new Paciente("Julian Casablancas", "2131231", "312312", "Armenia", "julian@gmail.com");
-//        Paciente pa2 = new Paciente("Jonathan Davis", "213532", "31253212", "Armenia", "jonathan@gmail.com");
-//
-//        // Médicos de ejemplo
-//        Medico m1 = new Medico("Dr. Carlos López", "101234", "3101234567", "Armenia",
-//                "carlos@hospital.com", "Cardiología", "Consultorio 12", "8am - 2pm");
-//
-//        Medico m2 = new Medico("Dra. María Pérez", "202345", "3119876543", "Armenia",
-//                "maria@hospital.com", "Pediatría", "Consultorio 5", "9am - 4pm");
-//
-//        // Citas de ejemplo
-//        Cita c1 = new Cita(m1, pa1, 150000, LocalDateTime.of(2025, 1, 20, 10, 0));
-//        Cita c2 = new Cita(m2, pa2, 180000, LocalDateTime.of(2025, 1, 21, 14, 30));
-//
-//        guardarCita(c1);
-//        guardarCita(c2);
+        // Pacientes de ejemplo
+        Paciente pa1 = new Paciente("Julian Casablancas", "2131231", "312312", "Armenia", "julian@gmail.com", "08/30/2000", "Dolor de Cabeza");
+        Paciente pa2 = new Paciente("Jonathan Davis", "213532", "31253212", "Armenia", "jonathan@gmail.com", "08/30/2001", "Dolor de Rodilla");
+        PacienteRepository.getInstancia().guardarPaciente(pa1);
+        PacienteRepository.getInstancia().guardarPaciente(pa2);
+
+        // Médicos de ejemplo
+        Medico m1 = new Medico("Dr. Carlos Ramírez", "108654", "3101234967", "Armenia",
+                "carlosR@hospital.com", "Cardiología", "Consultorio 12");
+
+        Medico m2 = new Medico("Dra. Lola Mento", "2023458", "3111876543", "Armenia",
+                "lola@hospital.com", "Pediatría", "Consultorio 5");
+
+        MedicoRepository.getInstancia().guardarMedico(m1);
+        MedicoRepository.getInstancia().guardarMedico(m2);
+
+        // Citas de ejemplo
+        Cita c1 = new Cita(m1, pa1, LocalDate.of(2025, 11, 19), LocalTime.of(14, 5), 2000, "El paciente presenta dolor de cabeza", "");
+        Cita c2 = new Cita(m2, pa2, LocalDate.of(2025, 11, 19), LocalTime.of(14, 5), 2000, "El paciente presenta dolor de rodilla", "");
+
+        guardarCita(c1);
+        guardarCita(c2);
     }
 }

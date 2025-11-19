@@ -23,6 +23,7 @@ public class CitasController {
     @FXML private TextField txtNombrePaciente;
     @FXML private TextField txtDocumentoPaciente;
     @FXML private TextField txtTelefonoPaciente;
+    @FXML private TextField txtCorreoPaciente;
 
     @FXML private TextField txtBuscarDocumento;
 
@@ -43,19 +44,23 @@ public class CitasController {
     @FXML private TableColumn<Cita, String> colHora;
     @FXML private TableColumn<Cita, String> colPaciente;
     @FXML private TableColumn<Cita, String> colMedico;
+    @FXML private TableColumn<Cita, String> colConsultorio;
     @FXML private TableColumn<Cita, Double> colPrecio;
     @FXML private TableColumn<Cita, String> colMotivo;
 
-    // --- REPOS ---
-    private final CitaRepository citaRepository = CitaRepository.getInstancia();
-    private final MedicoRepository medicoRepository = MedicoRepository.getInstancia();
-    private final PacienteRepository pacienteRepository = PacienteRepository.getInstancia();
+    // --- REPOSITORIOS ---
+    private CitaRepository citaRepository;
+    private MedicoRepository medicoRepository;
+    private PacienteRepository pacienteRepository;
 
-    // idIgnorar para edición de citas (por ahora siempre null)
-    private Integer idIgnorar = null;
+    // idCita para edición de citas (por ahora siempre null)
+    private String idCita = null;
 
     @FXML
     public void initialize() {
+        citaRepository = CitaRepository.getInstancia();
+        medicoRepository = MedicoRepository.getInstancia();
+        pacienteRepository = PacienteRepository.getInstancia();
 
         // Configurar tabla
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -63,13 +68,23 @@ public class CitasController {
         colHora.setCellValueFactory(new PropertyValueFactory<>("horaFormateada"));
         colPaciente.setCellValueFactory(new PropertyValueFactory<>("pacienteNombre"));
         colMedico.setCellValueFactory(new PropertyValueFactory<>("medicoNombre"));
+        colConsultorio.setCellValueFactory(new PropertyValueFactory<>("consultorio"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         colMotivo.setCellValueFactory(new PropertyValueFactory<>("motivo"));
 
         tblCitas.setItems(citaRepository.getCitas());
 
+        tblCitas.getSelectionModel().selectedItemProperty().addListener((obs, oldV, nueva) -> {
+            if (nueva != null) {
+                cargarDatosCita(nueva);
+            }
+        });
+
         // Pacientes
         cmbPacientes.setItems(pacienteRepository.getPacientes());
+        cmbPacientes.valueProperty().addListener((obs, oldV, newV) -> {
+            cargarDatosPaciente(newV);
+        });
 
         // Listeners para recargar médicos cuando cambie fecha u hora
         dtFecha.valueProperty().addListener((obs, oldV, newV) -> cargarMedicosDisponibles());
@@ -101,15 +116,88 @@ public class CitasController {
         Paciente paciente = pacienteOpt.get();
 
         // Llenar formulario
-        txtNombrePaciente.setText(paciente.getNombre());
-        txtDocumentoPaciente.setText(paciente.getDocumento());
-        txtTelefonoPaciente.setText(paciente.getTelefono());
+         cargarDatosPaciente(paciente);
 
         cmbPacientes.setValue(paciente);
     }
 
+    @FXML
+    private void onEliminarCita(){
+        Cita citaSeleccionada = tblCitas.getSelectionModel().getSelectedItem();
+
+        if (citaSeleccionada == null) {
+            mostrarAlerta("Debe seleccionar una cita para eliminar");
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirmar Eliminación");
+        confirm.setHeaderText("¿Desea eliminar esta cita?");
+        confirm.setContentText("Paciente: " + citaSeleccionada.getPacienteNombre() + " - " + "Medico: " + citaSeleccionada.getMedicoNombre() + " ( " + citaSeleccionada.getHoraFormateada() + " )");
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                 citaRepository.eliminarCita(citaSeleccionada);
+                 cargarCitas();
+                mostrarAlerta("Éxito", "Cita eliminada", Alert.AlertType.INFORMATION);
+            }
+        });
+    }
+
+    @FXML
+    private void onActualizarCita() {
+        Cita citaSeleccionada = tblCitas.getSelectionModel().getSelectedItem();
+
+        if (citaSeleccionada == null) {
+            mostrarAlerta("Debe seleccionar una cita para actualizar");
+            return;
+        }
+
+        if (!validarCampos()) return;
+
+        Paciente paciente = cmbPacientes.getValue();
+        Medico medico = cmbMedicos.getValue();
+        LocalDate fecha = dtFecha.getValue();
+        LocalTime hora = LocalTime.parse(txtHora.getText());
+
+        double precio;
+        try {
+            precio = Double.parseDouble(txtPrecio.getText());
+        } catch (Exception e) {
+            mostrarAlerta("Precio inválido.");
+            return;
+        }
+
+        // Validar conflicto de horario (permitiendo ignorar esta cita)
+        if (citaRepository.existeCitaEnHorario(medico, fecha, hora, String.valueOf(idCita))) {
+            mostrarAlerta("El médico ya tiene una cita en ese horario.");
+            return;
+        }
+
+        // *** Actualizar valores ***
+        citaSeleccionada.setPaciente(paciente);
+        citaSeleccionada.setMedico(medico);
+        citaSeleccionada.setFecha(fecha);
+        citaSeleccionada.setHora(hora);
+        citaSeleccionada.setMotivo(txtMotivo.getText());
+        citaSeleccionada.setObservaciones(txtObservaciones.getText());
+        citaSeleccionada.setPrecio(precio);
+
+        citaRepository.actualizarCita(citaSeleccionada);
+
+        tblCitas.refresh();
+        limpiarCampos();
+
+        mostrarAlerta("Éxito", "Cita actualizada correctamente", Alert.AlertType.INFORMATION);
+    }
+
+
+    private void cargarCitas() {
+        tblCitas.setItems(citaRepository.getCitas());
+    }
+
     // ==========================================================
-    //     MÉDICOS DISPONIBLES (con idIgnorar)
+    //     MÉDICOS DISPONIBLES (con idCita)
     // ==========================================================
     private void cargarMedicosDisponibles() {
 
@@ -130,7 +218,7 @@ public class CitasController {
             return;
         }
 
-        // MÉTODO CORRECTO (incluye idIgnorar)
+
         cmbMedicos.setItems(
                 medicoRepository.getMedicosDisponibles(fecha, hora)
         );
@@ -143,6 +231,11 @@ public class CitasController {
     private void onGuardarCita() {
 
         if (!validarCampos()) return;
+
+        if(citaRepository.existeCite(idCita)){
+            mostrarAlerta("Esta cita ya está registrada");
+            return;
+        }
 
         Paciente paciente = cmbPacientes.getValue();
         Medico medico = cmbMedicos.getValue();
@@ -158,7 +251,7 @@ public class CitasController {
         }
 
         // Verificar conflicto de horario en el repositorio
-        boolean conflicto = citaRepository.existeCitaEnHorario(medico, fecha, hora, String.valueOf(idIgnorar));
+        boolean conflicto = citaRepository.existeCitaEnHorario(medico, fecha, hora, String.valueOf(idCita));
 
         if (conflicto) {
             mostrarAlerta("El médico ya tiene una cita en ese horario.");
@@ -171,7 +264,8 @@ public class CitasController {
                 fecha,
                 hora,
                 precio,
-                txtMotivo.getText()
+                txtMotivo.getText(),
+                txtObservaciones.getText()
         );
 
         citaRepository.guardarCita(nueva);
@@ -180,6 +274,15 @@ public class CitasController {
         tblCitas.refresh();
         limpiarCampos();
         mostrarAlerta("Éxito", "Cita registrada correctamente", Alert.AlertType.INFORMATION);
+    }
+
+    private void cargarDatosPaciente(Paciente paciente) {
+        if (paciente == null) return;
+
+        txtNombrePaciente.setText(paciente.getNombre());
+        txtDocumentoPaciente.setText(paciente.getDocumento());
+        txtTelefonoPaciente.setText(paciente.getTelefono());
+        txtCorreoPaciente.setText(paciente.getCorreo());
     }
 
 
@@ -207,7 +310,7 @@ public class CitasController {
         txtHora.clear();
         txtPrecio.clear();
 
-        idIgnorar = null; // Reiniciar cuando se limpia
+        idCita = null; // Reiniciar cuando se limpia
     }
 
     // ==========================================================
@@ -241,5 +344,19 @@ public class CitasController {
         }
 
         return true;
+    }
+
+    private void cargarDatosCita(Cita c) {
+        idCita = String.valueOf(c.getId());
+
+        cmbPacientes.setValue(c.getPaciente());
+        cargarDatosPaciente(c.getPaciente());
+
+        dtFecha.setValue(c.getFecha());
+        txtHora.setText(c.getHoraFormateada());
+        txtMotivo.setText(c.getMotivo());
+        txtPrecio.setText(String.valueOf(c.getPrecio()));
+        txtObservaciones.setText(c.getObservaciones());
+        cmbMedicos.setValue(c.getMedico());
     }
 }

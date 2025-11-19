@@ -4,13 +4,12 @@ public class Medico extends Persona{
     private String especialidad;
     private String consultorio;
     private String horario;
-    private boolean disponible;
 
-    public Medico(String nombre, String documento, String telefono, String direccion, String correo, String especialidad, String consultorio, String horario){
+
+    public Medico(String nombre, String documento, String telefono, String direccion, String correo, String especialidad, String consultorio){
         super(nombre, documento, telefono, direccion, correo);
         this.consultorio = consultorio;
         this.especialidad = especialidad;
-        this.horario = horario;
     }
 
     public String getHorario() {
@@ -37,12 +36,12 @@ public class Medico extends Persona{
         this.especialidad = especialidad;
     }
 
-    public boolean isDisponible() {
-        return disponible;
-    }
-
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
+    @Override
+    public String toString() {
+        return "Medico: " + super.toString() +
+                "especialidad='" + especialidad + '\'' +
+                ", consultorio='" + consultorio + '\'' +
+                '}';
     }
 }
 

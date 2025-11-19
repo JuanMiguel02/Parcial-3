@@ -1,4 +1,4 @@
-#  Sistema de Gestión de Ventas - JavaFX
+#  Sistema de Gestión de Citas - JavaFX
 
 Aplicación de escritorio desarrollada con **JavaFX** que permite gestionar clientes, productos y ventas de forma integrada.
 

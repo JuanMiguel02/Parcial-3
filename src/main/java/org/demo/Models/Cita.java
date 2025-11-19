@@ -20,8 +20,9 @@ public class Cita {
     private LocalTime hora;
     private double precio;
     private String motivo;
+    private String observaciones;
 
-    public Cita(Medico medico, Paciente paciente, LocalDate fecha, LocalTime hora, double precio, String motivo) {
+    public Cita(Medico medico, Paciente paciente, LocalDate fecha, LocalTime hora, double precio, String motivo, String observaciones) {
         this.medico = medico;
         this.paciente = paciente;
         this.fecha = fecha;
@@ -29,6 +30,7 @@ public class Cita {
         this.precio = precio;
         this.id = generarIdCita();
         this.motivo = motivo;
+        this.observaciones = observaciones;
     }
 
     public String getId() { return id; }
@@ -38,6 +40,14 @@ public class Cita {
     public LocalTime getHora() { return hora; }
     public double getPrecio() { return precio; }
     public String getMotivo(){return motivo;}
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
 
     public void setMedico(Medico medico) { this.medico = medico; }
     public void setPaciente(Paciente paciente) { this.paciente = paciente; }
@@ -53,6 +63,8 @@ public class Cita {
     public String getPacienteNombre() {
         return paciente.getNombre();
     }
+
+    public String getConsultorio(){return medico.getConsultorio();}
 
     private static String generarIdCita() {
         return "CITA-" + System.currentTimeMillis() + "-" +

@@ -70,7 +70,7 @@ public class Persona {
 
     @Override
     public String toString() {
-        return "Cliente: " +
+        return " " +
                   nombre +
                 ", documento: " + documento +
                 ", telefono: " + telefono +

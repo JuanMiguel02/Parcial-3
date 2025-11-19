@@ -17,7 +17,6 @@ public class MedicosController {
     @FXML private TextField txtCorreo;
     @FXML private TextField txtEspecialidad;
     @FXML private TextField txtConsultorio;
-    @FXML private TextField txtHorario;
 
     @FXML private TableView<Medico> tblMedicos;
 
@@ -28,7 +27,6 @@ public class MedicosController {
     @FXML private TableColumn<Medico, String> colCorreo;
     @FXML private TableColumn<Medico, String> colEspecialidad;
     @FXML private TableColumn<Medico, String> colConsultorio;
-    @FXML private TableColumn<Medico, String> colHorario;
 
     private MedicoRepository medicoRepository;
 
@@ -43,7 +41,6 @@ public class MedicosController {
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
         colEspecialidad.setCellValueFactory(new PropertyValueFactory<>("especialidad"));
         colConsultorio.setCellValueFactory(new PropertyValueFactory<>("consultorio"));
-        colHorario.setCellValueFactory(new PropertyValueFactory<>("horario"));
 
         cargarMedicos();
 
@@ -56,7 +53,6 @@ public class MedicosController {
                 txtCorreo.setText(sel.getCorreo());
                 txtEspecialidad.setText(sel.getEspecialidad());
                 txtConsultorio.setText(sel.getConsultorio());
-                txtHorario.setText(sel.getHorario());
             } else {
                 limpiarCampos();
             }
@@ -79,8 +75,7 @@ public class MedicosController {
                 txtDireccion.getText(),
                 txtCorreo.getText(),
                 txtEspecialidad.getText(),
-                txtConsultorio.getText(),
-                txtHorario.getText()
+                txtConsultorio.getText()
         );
 
         medicoRepository.guardarMedico(medico);
@@ -130,7 +125,6 @@ public class MedicosController {
         sel.setCorreo(txtCorreo.getText());
         sel.setEspecialidad(txtEspecialidad.getText());
         sel.setConsultorio(txtConsultorio.getText());
-        sel.setHorario(txtHorario.getText());
 
         medicoRepository.actualizarMedico(sel);
 
@@ -155,7 +149,6 @@ public class MedicosController {
         if (txtCorreo.getText().isEmpty()) { txtCorreo.requestFocus(); mostrarAlerta("Correo obligatorio"); return false; }
         if (txtEspecialidad.getText().isEmpty()) { txtEspecialidad.requestFocus(); mostrarAlerta("Especialidad obligatoria"); return false; }
         if (txtConsultorio.getText().isEmpty()) { txtConsultorio.requestFocus(); mostrarAlerta("Consultorio obligatorio"); return false; }
-        if (txtHorario.getText().isEmpty()) { txtHorario.requestFocus(); mostrarAlerta("Horario obligatorio"); return false; }
 
         return true;
     }
@@ -168,6 +161,5 @@ public class MedicosController {
         txtCorreo.clear();
         txtEspecialidad.clear();
         txtConsultorio.clear();
-        txtHorario.clear();
     }
 }

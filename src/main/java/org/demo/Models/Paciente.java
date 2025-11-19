@@ -10,9 +10,6 @@ public class Paciente extends Persona{
         this.enfermedad = enfermedad;
     }
 
-    public String getPacienteNombre() {
-        return getNombre();
-    }
 
     public String getFechaNacimiento() {
         return fechaNacimiento;

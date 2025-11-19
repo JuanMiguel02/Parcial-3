@@ -16,7 +16,7 @@
    <top>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #0F2027;" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Sistema de Gestión de Ventas" textFill="WHITE">
+            <Label text="Sistema de Gestión de Citas Médicas" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font>
@@ -112,6 +112,11 @@
                                        <Label fx:id="lblMedicos" alignment="CENTER" layoutX="40.0" layoutY="300.0" prefHeight="80.0" prefWidth="180.0" text="0">
                                            <font><Font name="Trebuchet MS" size="60.0" /></font>
                                        </Label>
+                              <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="40.0" layoutY="97.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/doctor.png" />
+                                 </image>
+                              </ImageView>
                                    </children>
                                </AnchorPane>
 
@@ -122,7 +127,7 @@
                                            <font><Font name="Trebuchet MS Bold" size="24.0" /></font>
                                        </Label>
                                        <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="40.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
-                                           <image><Image url="@Images/cita.png" /></image>
+                                           <image><Image url="@Images/stethoscope.png" /></image>
                                        </ImageView>
                                        <Label fx:id="lblCitas" alignment="CENTER" layoutX="40.0" layoutY="300.0" prefHeight="80.0" prefWidth="180.0" text="0">
                                            <font><Font name="Trebuchet MS" size="60.0" /></font>
