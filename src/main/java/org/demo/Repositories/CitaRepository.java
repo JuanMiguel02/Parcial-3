@@ -7,7 +7,6 @@ import org.demo.Models.Medico;
 import org.demo.Models.Paciente;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
@@ -71,7 +70,7 @@ public class CitaRepository {
     /**
      * Busca una cita por su ID.
      */
-    public boolean existeCite(String idCita) {
+    public boolean existeCita(String idCita) {
         return citas.stream()
                 .anyMatch(cita ->  cita.getId().equals(idCita));
     }
@@ -87,7 +86,6 @@ public class CitaRepository {
                         c.getHora().equals(hora)
         );
     }
-
 
     /**
      * Carga datos de ejemplo usando Médicos y Pacientes.

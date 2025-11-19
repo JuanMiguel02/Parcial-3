@@ -1,14 +1,14 @@
-#  Sistema de Gestión de Citas - JavaFX
+# Sistema de Gestión de Citas Médicas – JavaFX
 
-Aplicación de escritorio desarrollada con **JavaFX** que permite gestionar clientes, productos y ventas de forma integrada.
-
+Aplicación de escritorio desarrollada con **JavaFX** para gestionar pacientes, médicos y citas médicas dentro de una clínica.
+El sistema permite registrar, consultar, modificar y eliminar información relacionada con la asignación de citas.
 ##  Características
 
-- **Dashboard principal** con acceso a clientes, productos y ventas
-- **Formularios dinámicos** para crear y modificar registros
-- **Cálculo automático** del total en las ventas
-- **Actualización automática** del inventario de productos
-- **Interfaz moderna y proporcional** con diseño en `GridPane` y `AnchorPane`
+- **Dashboard principal** que carga tres módulos en FXML: Pacientes, Médicos, Citas
+- **Formularios dinámicos** para registro y actualización de datos
+- **Validación automatica** de horarios para evitar conflictos entre citas
+- Interfaz construida con JavaFX usando FXML
+- Uso de Programación Orientada a Objetos (herencia, abstracción, encapsulamiento)
 - **Arquitectura MVC** con separación clara entre modelo, vista y controlador
 
 ---
@@ -60,54 +60,53 @@ Con las siguientes opciones VM si es necesario:
 ## Estructura del Proyecto
 
 ```
-sistema-gestion/
+sistema-citas/
 ├── src/
 │   └── main/
 │       ├── java/
 │       │   └── org/demo/
-│       │       ├── MainApp.java                     # Clase principal
-│       │       ├── Controllers/                     # Controladores FXML
-│       │       │   ├── ClienteController.java
-│       │       │   ├── ProductoController.java
-│       │       │   └── VentaController.java
-│       │       ├── Models/                          # Clases del modelo
-│       │       │   ├── Cliente.java
-│       │       │   ├── Producto.java
-│       │       │   └── Venta.java
-│       │       └── Repositories/                    # Gestión de datos
-│       │           ├── ClienteRepository.java
-│       │           ├── ProductoRepository.java
-│       │           └── VentaRepository.java
-│       │       └── Utils/                          #Clases auxiliares
-│       │           └── AlertHelper.java            
+│       │       ├── Launcher.java
+│       │       ├── Controllers/
+│       │       │   ├── PacienteController.java
+│       │       │   ├── MedicoController.java
+│       │       │   └── CitasController.java
+│       │       ├── Models/
+│       │       │   ├── Persona.java
+│       │       │   ├── Paciente.java
+│       │       │   ├── Medico.java
+│       │       │   └── Cita.java
+│       │       └── Repositories/
+│       │           ├── PacienteRepository.java
+│       │           ├── MedicoRepository.java
+│       │           └── CitaRepository.java
 │       └── resources/
 │           └── org/demo/
-│               └── org/demo/Images/                #Imagenes del proyecto
 │               ├── Dashboard.fxml
-│               ├── Clientes.fxml
-│               ├── Productos.fxml
-│               └── Ventas.fxml
-└── pom.xml                                           # Configuración Maven
-```
+│               ├── Pacientes.fxml
+│               ├── Medicos.fxml
+│               └── Citas.fxml
+└── pom.xml
 
+```
 ---
 
 ##  Uso
 
-### Módulo de Clientes
-- Registrar nuevos clientes
+### Módulo de Pacientes
+- Registrar pacientes
 - Editar y eliminar información existente
-- Visualizar la lista completa de clientes
+- Visualizar la lista completa de pacientes
 
-### Módulo de Productos
-- Crear, modificar o eliminar productos
-- Consultar inventario en tiempo real
-- Actualizar cantidad automáticamente tras cada cita
+### Módulo de Médicos
+- Registrar médicos con especialidad y consultorio
+- Editar y eliminar médicos
+- Consultar listado completo
 
-### Módulo de Ventas
-- Registrar una cita seleccionando cliente y producto
-- Calcular total automáticamente
-- Reducir existencias del producto vendido
+### Módulo de Citas
+- Registrar citas asignando paciente y médico
+- Agregar fecha, hora y precio
+- Verificar horarios para evitar duplicados
+- Editar o cancelar citas existentes
 
 ---
 
@@ -116,7 +115,7 @@ sistema-gestion/
 ### Patrón MVC
 El proyecto implementa el patrón **Modelo-Vista-Controlador** para separar la lógica de negocio de la interfaz gráfica.
 
-- **Modelo**: Clases `Cliente`, `Producto`, `Venta`
+- **Modelo**: Clases `Cita`, `Paciente`, `Medico`, `Persona`
 - **Vista**: Archivos FXML
 - **Controlador**: Clases Java que gestionan la interacción con la vista
 
@@ -136,10 +135,10 @@ Los repositorios gestionan las listas de datos y permiten agregar, eliminar y ac
 
 ## Datos de Ejemplo
 
-El sistema incluye datos de ejemplo precargados para cada módulo:
-- **Clientes:** Simón Bolivar, Armando Casas, Chino Moreno
-- **Productos:** Coca Cola, Detodito, Chocorramo
-- **Ventas:** Asociadas a los clientes y productos anteriores
+El sistema incluye datos de ejemplo pre cargados para cada módulo:
+- Pacientes de ejemplo
+- Médicos de ejemplo
+- Citas con fecha y hora
 
 ---
 
@@ -157,11 +156,11 @@ El sistema incluye datos de ejemplo precargados para cada módulo:
 
 Las imágenes utilizadas provienen de [Flaticon](https://www.flaticon.com) bajo licencia libre con atribución:
 
-|      Imagen       | Descripción        | Fuente                                                                                                | Licencia                                              |
-|:-----------------:|--------------------|-------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| **clientes.png**  | Icono de clientes  | [Gente de negocios – Kornkun (Flaticon)](https://www.flaticon.es/iconos-gratis/gente-de-negocios)     | [Licencia Flaticon](https://www.flaticon.com/license) |
-| **productos.png** | Icono de productos | [Producto iconos creados por HANIS - Flaticon](https://www.flaticon.es/iconos-gratis/producto)        | [Licencia Flaticon](https://www.flaticon.com/license) |
-|   **cita.png**   | Icono de cita     | [Garrapata iconos creados por Roundicons - Flaticon](https://www.flaticon.es/iconos-gratis/garrapata) | [Licencia Flaticon](https://www.flaticon.com/license) |
+|      Imagen       | Descripción       | Fuente                                                                                               | Licencia                                              |
+|:-----------------:|-------------------|------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| **pacientes.png** | Icono de clientes | [Gente de negocios – Kornkun (Flaticon)](https://www.flaticon.es/iconos-gratis/gente-de-negocios)    | [Licencia Flaticon](https://www.flaticon.com/license) |
+|  **doctor.png**   | Icono de doctor   | [Doctor icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/doctor "doctor icons")   | [Licencia Flaticon](https://www.flaticon.com/license) |
+|   **citas.png**   | Icono de cita     | [Doctor icons created by srip - Flaticon](https://www.flaticon.com/free-icons/doctor "doctor icons")| [Licencia Flaticon](https://www.flaticon.com/license) |
 
 
 
@@ -171,7 +170,7 @@ Las imágenes utilizadas provienen de [Flaticon](https://www.flaticon.com) bajo 
 
 ##  Autor
 
-Proyecto desarrollado por **Juan Miguel Henao Gaviria**  
+Proyecto desarrollado por **Juan Miguel Henao Gaviria y Jerónimo Delgado Estrada**  
 Desarrollado para el curso de Programación I - Universidad del Quindío
 
 ---

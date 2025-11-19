@@ -1,6 +1,6 @@
 package org.demo.Models;
 
-public class Persona {
+public abstract class Persona {
     private static int contador = 1;
     private int id;
     private String nombre;
@@ -73,8 +73,8 @@ public class Persona {
         return " " +
                   nombre +
                 ", documento: " + documento +
-                ", telefono: " + telefono +
-                ", direccion: " + direccion +
+                ", teléfono: " + telefono +
+                ", dirección: " + direccion +
                 ", correo: " + correo + "\n"
                 ;
     }

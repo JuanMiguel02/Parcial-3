@@ -59,6 +59,7 @@ public class PacientesController {
                 limpiarCampos();
             }
         });
+        configurarValidaciones();
     }
 
     // GUARDAR
@@ -191,4 +192,57 @@ public class PacientesController {
         }
         return true;
     }
+
+    private void configurarValidaciones() {
+
+        // Solo letras y espacios (nombre)
+        txtNombre.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[a-zA-ZÁÉÍÓÚáéíóúÑñ\\s]*")) {
+                txtNombre.setText(oldVal);
+            }
+        });
+
+        // Solo números (documento)
+        txtDocumento.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                txtDocumento.setText(oldVal);
+            }
+        });
+
+        // Solo números (teléfono)
+        txtTelefono.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                txtTelefono.setText(oldVal);
+            }
+        });
+
+        // Letras + números + espacios (dirección)
+        txtDireccion.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[a-zA-Z0-9ÁÉÍÓÚáéíóúÑñ\\s\\-#\\.]*")) {
+                txtDireccion.setText(oldVal);
+            }
+        });
+
+        // Correo: permite letras, números y símbolos básicos
+        txtCorreo.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[A-Za-z0-9@._+-]*")) {
+                txtCorreo.setText(oldVal);
+            }
+        });
+
+        // Fecha: solo números y guiones (YYYY-MM-DD)
+        txtFechaNacimiento.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[0-9\\-]*")) {
+                txtFechaNacimiento.setText(oldVal);
+            }
+        });
+
+        // Enfermedad: solo letras, espacios y números
+        txtEnfermedad.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\\s]*")) {
+                txtEnfermedad.setText(oldVal);
+            }
+        });
+    }
+
 }

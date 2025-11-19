@@ -20,40 +20,61 @@ import static org.demo.Utils.AlertHelper.mostrarAlerta;
 public class CitasController {
 
     // --- FORMULARIO ---
-    @FXML private TextField txtNombrePaciente;
-    @FXML private TextField txtDocumentoPaciente;
-    @FXML private TextField txtTelefonoPaciente;
-    @FXML private TextField txtCorreoPaciente;
+    @FXML
+    private TextField txtNombrePaciente;
+    @FXML
+    private TextField txtDocumentoPaciente;
+    @FXML
+    private TextField txtTelefonoPaciente;
+    @FXML
+    private TextField txtCorreoPaciente;
 
-    @FXML private TextField txtBuscarDocumento;
+    @FXML
+    private TextField txtBuscarDocumento;
 
-    @FXML private ComboBox<Paciente> cmbPacientes;
-    @FXML private ComboBox<Medico> cmbMedicos;
+    @FXML
+    private ComboBox<Paciente> cmbPacientes;
+    @FXML
+    private ComboBox<Medico> cmbMedicos;
 
-    @FXML private TextField txtMotivo;
-    @FXML private TextArea txtObservaciones;
+    @FXML
+    private TextField txtMotivo;
+    @FXML
+    private TextArea txtObservaciones;
 
-    @FXML private DatePicker dtFecha;
-    @FXML private TextField txtHora;
-    @FXML private TextField txtPrecio;
+    @FXML
+    private DatePicker dtFecha;
+    @FXML
+    private TextField txtHora;
+    @FXML
+    private TextField txtPrecio;
 
     // --- TABLA ---
-    @FXML private TableView<Cita> tblCitas;
-    @FXML private TableColumn<Cita, Integer> colId;
-    @FXML private TableColumn<Cita, String> colFecha;
-    @FXML private TableColumn<Cita, String> colHora;
-    @FXML private TableColumn<Cita, String> colPaciente;
-    @FXML private TableColumn<Cita, String> colMedico;
-    @FXML private TableColumn<Cita, String> colConsultorio;
-    @FXML private TableColumn<Cita, Double> colPrecio;
-    @FXML private TableColumn<Cita, String> colMotivo;
+    @FXML
+    private TableView<Cita> tblCitas;
+    @FXML
+    private TableColumn<Cita, Integer> colId;
+    @FXML
+    private TableColumn<Cita, String> colFecha;
+    @FXML
+    private TableColumn<Cita, String> colHora;
+    @FXML
+    private TableColumn<Cita, String> colPaciente;
+    @FXML
+    private TableColumn<Cita, String> colMedico;
+    @FXML
+    private TableColumn<Cita, String> colConsultorio;
+    @FXML
+    private TableColumn<Cita, Double> colPrecio;
+    @FXML
+    private TableColumn<Cita, String> colMotivo;
 
     // --- REPOSITORIOS ---
     private CitaRepository citaRepository;
     private MedicoRepository medicoRepository;
     private PacienteRepository pacienteRepository;
 
-    // idCita para edición de citas (por ahora siempre null)
+    // idCita para edición de citas
     private String idCita = null;
 
     @FXML
@@ -82,19 +103,19 @@ public class CitasController {
 
         // Pacientes
         cmbPacientes.setItems(pacienteRepository.getPacientes());
-        cmbPacientes.valueProperty().addListener((obs, oldV, newV) -> {
-            cargarDatosPaciente(newV);
-        });
+        cmbPacientes.valueProperty().addListener((obs, oldV, newV) -> cargarDatosPaciente(newV));
 
         // Listeners para recargar médicos cuando cambie fecha u hora
         dtFecha.valueProperty().addListener((obs, oldV, newV) -> cargarMedicosDisponibles());
         txtHora.textProperty().addListener((obs, oldV, newV) -> cargarMedicosDisponibles());
 
+        //siempre carga los medicos disponibles
         cargarMedicosDisponibles();
+        configurarValidaciones();
     }
 
     // ==========================================================
-    //     MÉTODO BUSCAR PACIENTE
+    //   BUSCAR PACIENTE
     // ==========================================================
     @FXML
     private void onBuscarPaciente() {
@@ -116,13 +137,16 @@ public class CitasController {
         Paciente paciente = pacienteOpt.get();
 
         // Llenar formulario
-         cargarDatosPaciente(paciente);
+        cargarDatosPaciente(paciente);
 
         cmbPacientes.setValue(paciente);
     }
 
+    // ==========================================================
+    //  ELIMINAR CITA
+    // ==========================================================
     @FXML
-    private void onEliminarCita(){
+    private void onEliminarCita() {
         Cita citaSeleccionada = tblCitas.getSelectionModel().getSelectedItem();
 
         if (citaSeleccionada == null) {
@@ -137,13 +161,16 @@ public class CitasController {
 
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                 citaRepository.eliminarCita(citaSeleccionada);
-                 cargarCitas();
+                citaRepository.eliminarCita(citaSeleccionada);
+                cargarCitas();
                 mostrarAlerta("Éxito", "Cita eliminada", Alert.AlertType.INFORMATION);
             }
         });
     }
 
+    // ==========================================================
+    //  ACTUALIZAR CITA
+    // ==========================================================
     @FXML
     private void onActualizarCita() {
         Cita citaSeleccionada = tblCitas.getSelectionModel().getSelectedItem();
@@ -153,7 +180,7 @@ public class CitasController {
             return;
         }
 
-        if (!validarCampos()) return;
+        if (validarCampos()) return;
 
         Paciente paciente = cmbPacientes.getValue();
         Medico medico = cmbMedicos.getValue();
@@ -197,7 +224,7 @@ public class CitasController {
     }
 
     // ==========================================================
-    //     MÉDICOS DISPONIBLES (con idCita)
+    //     MÉDICOS DISPONIBLES
     // ==========================================================
     private void cargarMedicosDisponibles() {
 
@@ -207,17 +234,16 @@ public class CitasController {
         try {
             hora = LocalTime.parse(txtHora.getText());
         } catch (Exception e) {
-            // Hora inválida → mostrar TODOS los médicos
+            // Hora inválida  (mostrar TODOS los médicos)
             cmbMedicos.setItems(medicoRepository.getMedicos());
             return;
         }
 
         if (fecha == null) {
-            // Fecha sin seleccionar → mostrar todos
+            // Fecha sin seleccionar - mostrar todos
             cmbMedicos.setItems(medicoRepository.getMedicos());
             return;
         }
-
 
         cmbMedicos.setItems(
                 medicoRepository.getMedicosDisponibles(fecha, hora)
@@ -230,9 +256,9 @@ public class CitasController {
     @FXML
     private void onGuardarCita() {
 
-        if (!validarCampos()) return;
+        if (validarCampos()) return;
 
-        if(citaRepository.existeCite(idCita)){
+        if (citaRepository.existeCita(idCita)) {
             mostrarAlerta("Esta cita ya está registrada");
             return;
         }
@@ -320,30 +346,30 @@ public class CitasController {
 
         if (cmbPacientes.getValue() == null) {
             mostrarAlerta("Debe seleccionar un paciente");
-            return false;
+            return true;
         }
         if (dtFecha.getValue() == null) {
             mostrarAlerta("Debe seleccionar una fecha");
-            return false;
+            return true;
         }
         if (txtHora.getText().isEmpty()) {
             mostrarAlerta("Debe ingresar una hora");
-            return false;
+            return true;
         }
         if (cmbMedicos.getValue() == null) {
             mostrarAlerta("Debe seleccionar un médico disponible");
-            return false;
+            return true;
         }
         if (txtMotivo.getText().isEmpty()) {
             mostrarAlerta("Debe ingresar el motivo de la cita");
-            return false;
+            return true;
         }
         if (txtPrecio.getText().isEmpty()) {
             mostrarAlerta("Debe ingresar un precio");
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     private void cargarDatosCita(Cita c) {
@@ -359,4 +385,59 @@ public class CitasController {
         txtObservaciones.setText(c.getObservaciones());
         cmbMedicos.setValue(c.getMedico());
     }
+
+    private void configurarValidaciones() {
+
+        // --- SOLO NÚMEROS PARA DOCUMENTO DE BÚSQUEDA ---
+        txtBuscarDocumento.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                txtBuscarDocumento.setText(oldVal);
+            }
+        });
+
+        // --- HORA FORMATO HH:MM ---
+        txtHora.textProperty().addListener((obs, oldVal, newVal) -> {
+
+            // Solo números y dos puntos
+            if (!newVal.matches("[0-9:]*")) {
+                txtHora.setText(oldVal);
+                return;
+            }
+
+            // Máximo 5 caracteres → "HH:MM"
+            if (newVal.length() > 5) {
+                txtHora.setText(oldVal);
+                return;
+            }
+
+            // Si tiene ":" debe estar en la posición 3 (HH:MM)
+            if (newVal.contains(":") && newVal.indexOf(":") != 2) {
+                txtHora.setText(oldVal);
+            }
+        });
+
+        // --- SOLO NÚMEROS Y DECIMALES PARA PRECIO ---
+        txtPrecio.textProperty().addListener((obs, oldVal, newVal) -> {
+
+            // Permitir números y un decimal
+            if (!newVal.matches("\\d*(\\.\\d{0,2})?")) {
+                txtPrecio.setText(oldVal);
+            }
+        });
+
+        // --- SOLO LETRAS PARA MOTIVO ---
+        txtMotivo.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[a-zA-ZÁÉÍÓÚáéíóúÑñ\\s]*")) {
+                txtMotivo.setText(oldVal);
+            }
+        });
+
+        // --- SOLO LETRAS EN OBSERVACIONES (pero permite comas y puntos) ---
+        txtObservaciones.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9.,\\s]*")) {
+                txtObservaciones.setText(oldVal);
+            }
+        });
+    }
+
 }

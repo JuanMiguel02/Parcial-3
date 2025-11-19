@@ -57,6 +57,7 @@ public class MedicosController {
                 limpiarCampos();
             }
         });
+        configurarValidaciones();
     }
 
     @FXML
@@ -162,4 +163,57 @@ public class MedicosController {
         txtEspecialidad.clear();
         txtConsultorio.clear();
     }
+
+    private void configurarValidaciones() {
+
+        // Solo letras y espacios (Nombre)
+        txtNombre.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[a-zA-ZÁÉÍÓÚáéíóúÑñ\\s]*")) {
+                txtNombre.setText(oldVal);
+            }
+        });
+
+        // Solo números (Documento)
+        txtDocumento.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                txtDocumento.setText(oldVal);
+            }
+        });
+
+        // Solo números (Teléfono)
+        txtTelefono.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                txtTelefono.setText(oldVal);
+            }
+        });
+
+        // Letras + números + espacios (Dirección)
+        txtDireccion.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[a-zA-Z0-9ÁÉÍÓÚáéíóúÑñ\\s\\-#\\.]*")) {
+                txtDireccion.setText(oldVal);
+            }
+        });
+
+        // Correo: letras, números y símbolos permitidos
+        txtCorreo.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[A-Za-z0-9@._+-]*")) {
+                txtCorreo.setText(oldVal);
+            }
+        });
+
+        // Solo letras (Especialidad)
+        txtEspecialidad.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[a-zA-ZÁÉÍÓÚáéíóúÑñ\\s]*")) {
+                txtEspecialidad.setText(oldVal);
+            }
+        });
+
+        // Consultorio: puede ser número o número con letra (ej: 304, 12B)
+        txtConsultorio.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("[a-zA-Z0-9ÁÉÍÓÚáéíóúÑñ\\s]*")) {
+                txtConsultorio.setText(oldVal);
+            }
+        });
+    }
+
 }

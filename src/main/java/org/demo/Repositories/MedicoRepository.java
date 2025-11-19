@@ -119,7 +119,7 @@ public class MedicoRepository {
      */
     public ObservableList<Medico> getMedicosDisponibles(LocalDate fecha, LocalTime hora){
         if (fecha == null || hora == null) {
-            // Si no hay fecha/hora seleccionada, devolvemos todos (o podrías devolver FXCollections.emptyObservableList())
+            // Si no hay fecha/hora seleccionada, devolvemos todos
             return FXCollections.unmodifiableObservableList(medicos);
         }
 

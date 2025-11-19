@@ -126,22 +126,12 @@ public class PacienteRepository {
     }
 
     /**
-     * Retorna la cantidad de pacientes registrados.
-     */
-    public int contarPacientes(){
-        return pacientes.size();
-    }
-
-    /**
      * Carga datos de ejemplo al iniciar el repositorio.
      */
     private void cargarDatosEjemplo(){
-//        Paciente p1 = new Paciente("Simón Bolívar", "1092313", "3142141", "Armenia", "simon@gmail.com");
-//        Paciente p2 = new Paciente("Armando Casas", "10924213", "3144541", "Armenia", "casas@gmail.com");
+
         Paciente p3 = new Paciente("Chino Moreno", "42142132", "31241241", "Armenia", "chino@gmail.com", "08/06/2004", "Dolor de cabeza");
 
-//        guardarPaciente(p1);
-//        guardarPaciente(p2);
         guardarPaciente(p3);
     }
 }

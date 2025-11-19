@@ -84,7 +84,7 @@
                    <children>
 
                        <!-- Contenedor central que mantiene los tres paneles centrados -->
-                       <VBox alignment="CENTER" spacing="60" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <VBox alignment="CENTER" layoutX="36.0" spacing="60" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="-36.0" AnchorPane.topAnchor="0.0">
 
                            <!-- HBox para alinear los tres paneles en una fila -->
                            <HBox alignment="CENTER" spacing="100">
@@ -95,7 +95,7 @@
                                            <font><Font name="Trebuchet MS Bold" size="24.0" /></font>
                                        </Label>
                                        <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="40.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
-                                           <image><Image url="@Images/clientes.png" /></image>
+                                           <image><Image url="@Images/pacientes.png" /></image>
                                        </ImageView>
                                        <Label fx:id="lblPacientes" alignment="CENTER" layoutX="40.0" layoutY="300.0" prefHeight="80.0" prefWidth="180.0" text="0">
                                            <font><Font name="Trebuchet MS" size="60.0" /></font>
@@ -127,7 +127,7 @@
                                            <font><Font name="Trebuchet MS Bold" size="24.0" /></font>
                                        </Label>
                                        <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="40.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
-                                           <image><Image url="@Images/stethoscope.png" /></image>
+                                           <image><Image url="@Images/citas.png" /></image>
                                        </ImageView>
                                        <Label fx:id="lblCitas" alignment="CENTER" layoutX="40.0" layoutY="300.0" prefHeight="80.0" prefWidth="180.0" text="0">
                                            <font><Font name="Trebuchet MS" size="60.0" /></font>

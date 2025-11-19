@@ -10,7 +10,6 @@ public class Paciente extends Persona{
         this.enfermedad = enfermedad;
     }
 
-
     public String getFechaNacimiento() {
         return fechaNacimiento;
     }
@@ -32,11 +31,9 @@ public class Paciente extends Persona{
         return "Paciente: " +
                 getNombre() +
                 ", documento: " + getDocumento() +
-                ", telefono: " + getTelefono() +
-                ", direccion: " + getDireccion() +
-                ", correo: " + getCorreo() +
-                ", historialMedico: "  +
-                ", fechaNacimiento: " + fechaNacimiento + "\n";
+                ", teléfono: " + getTelefono() +
+                ", dirección: " + getDireccion() +
+                ", correo: " + getCorreo() + '\n';
     }
 
 }
