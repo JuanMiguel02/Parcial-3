@@ -25,7 +25,7 @@ El sistema permite registrar, consultar, modificar y eliminar información relac
 ## Instalación y Ejecución
 
 ```bash
-https://github.com/JuanMiguel02/Taller5-POO-Ventas.git
+https://github.com/JuanMiguel02/Parcial-3/tree/main
 ```
 
 
