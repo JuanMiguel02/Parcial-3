@@ -306,7 +306,7 @@ public class CitasController {
         if (paciente == null) return;
 
         txtNombrePaciente.setText(paciente.getNombre());
-        txtDocumentoPaciente.setText(paciente.getDocumento());
+        txtDocumentoPaciente.setText(paciente.getNumDocumento());
         txtTelefonoPaciente.setText(paciente.getTelefono());
         txtCorreoPaciente.setText(paciente.getCorreo());
     }

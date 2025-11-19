@@ -3,6 +3,7 @@ package org.demo.Repositories;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.demo.Models.Paciente;
+import org.demo.Models.TipoDocumento;
 
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class PacienteRepository {
      * @param paciente paciente a registrar.
      */
     public void guardarPaciente(Paciente paciente){
-        if(existePacienteConDocumento(paciente.getDocumento()) ||
+        if(existePacienteConDocumento(paciente.getNumDocumento()) ||
                 existePacienteConCorreo(paciente.getCorreo())){
             throw new RuntimeException("Este paciente ya se encuentra registrado");
         }
@@ -78,7 +79,7 @@ public class PacienteRepository {
         if(pacienteExistenteOpt.isPresent()){
             Paciente existente = pacienteExistenteOpt.get();
 
-            existente.setDocumento(paciente.getDocumento());
+            existente.setNumDocumento(paciente.getNumDocumento());
             existente.setCorreo(paciente.getCorreo());
             existente.setNombre(paciente.getNombre());
             existente.setTelefono(paciente.getTelefono());
@@ -91,7 +92,7 @@ public class PacienteRepository {
      */
     public boolean existePacienteConDocumento(String documento){
         return pacientes.stream()
-                .anyMatch(p -> p.getDocumento().equalsIgnoreCase(documento.trim()));
+                .anyMatch(p -> p.getNumDocumento().equalsIgnoreCase(documento.trim()));
     }
 
     /**
@@ -121,7 +122,7 @@ public class PacienteRepository {
 
     public Optional<Paciente> buscarPorDocumento(String documento){
         return pacientes.stream()
-                .filter(p -> p.getDocumento().equalsIgnoreCase(documento))
+                .filter(p -> p.getNumDocumento().equalsIgnoreCase(documento))
                 .findFirst();
     }
 
@@ -130,7 +131,7 @@ public class PacienteRepository {
      */
     private void cargarDatosEjemplo(){
 
-        Paciente p3 = new Paciente("Chino Moreno", "42142132", "31241241", "Armenia", "chino@gmail.com", "08/06/2004", "Dolor de cabeza");
+        Paciente p3 = new Paciente("Chino Moreno", TipoDocumento.CC,"42142132", "31241241", "Armenia", "chino@gmail.com", "08/06/2004", "Dolor de cabeza");
 
         guardarPaciente(p3);
     }

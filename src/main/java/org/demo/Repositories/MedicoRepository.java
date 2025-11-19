@@ -3,6 +3,7 @@ package org.demo.Repositories;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.demo.Models.Medico;
+import org.demo.Models.TipoDocumento;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -48,7 +49,7 @@ public class MedicoRepository {
      * Lanza excepción si documento o correo ya existen.
      */
     public void guardarMedico(Medico medico){
-        if(existeMedicoConDocumento(medico.getDocumento()) ||
+        if(existeMedicoConDocumento(medico.getNumDocumento()) ||
                 existeMedicoConCorreo(medico.getCorreo())) {
 
             throw new RuntimeException("Ya existe un médico registrado con este documento o correo");
@@ -72,7 +73,7 @@ public class MedicoRepository {
             Medico existente = medicoExistenteOpt.get();
 
             existente.setNombre(medico.getNombre());
-            existente.setDocumento(medico.getDocumento());
+            existente.setNumDocumento(medico.getNumDocumento());
             existente.setTelefono(medico.getTelefono());
             existente.setDireccion(medico.getDireccion());
             existente.setCorreo(medico.getCorreo());
@@ -87,7 +88,7 @@ public class MedicoRepository {
      */
     public boolean existeMedicoConDocumento(String documento){
         return medicos.stream()
-                .anyMatch(m -> m.getDocumento().equalsIgnoreCase(documento.trim()));
+                .anyMatch(m -> m.getNumDocumento().equalsIgnoreCase(documento.trim()));
     }
 
     /**
@@ -133,19 +134,19 @@ public class MedicoRepository {
      */
     private void cargarDatosEjemplo(){
         Medico m1 = new Medico(
-                "Carlos López", "101234", "3101234567",
+                "Carlos López", TipoDocumento.CC, "101234", "3101234567",
                 "Armenia", "carlos@hospital.com",
                 "Cardiología", "Consultorio 12"
         );
 
         Medico m2 = new Medico(
-                "María Pérez", "202345", "3119876543",
+                "María Pérez", TipoDocumento.CC,"202345", "3119876543",
                 "Armenia", "maria@hospital.com",
                 "Pediatría", "Consultorio 5"
         );
 
         Medico m3 = new Medico(
-                "Juan Gómez", "303456", "3107654321",
+                "Juan Gómez", TipoDocumento.CC, "303456", "3107654321",
                 "Armenia", "juan@hospital.com",
                 "Neurología", "Consultorio 8"
         );

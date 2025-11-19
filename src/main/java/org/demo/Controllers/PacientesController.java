@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.demo.Models.Paciente;
+import org.demo.Models.TipoDocumento;
 import org.demo.Repositories.PacienteRepository;
 
 import static org.demo.Utils.AlertHelper.mostrarAlerta;
@@ -18,9 +19,12 @@ public class PacientesController {
     @FXML private TextField txtFechaNacimiento;
     @FXML private TextField txtEnfermedad;
 
+    @FXML private ComboBox<TipoDocumento> cmbTipoDoc;
+
     @FXML private TableView<Paciente> tblPacientes;
 
     @FXML private TableColumn<Paciente, String> colNombre;
+    @FXML private TableColumn<Paciente, TipoDocumento> colTipoDoc;
     @FXML private TableColumn<Paciente, String> colDocumento;
     @FXML private TableColumn<Paciente, String> colTelefono;
     @FXML private TableColumn<Paciente, String> colDireccion;
@@ -34,9 +38,13 @@ public class PacientesController {
     public void initialize() {
         pacienteRepository = PacienteRepository.getInstancia();
 
+        // Inicializar combo
+        cmbTipoDoc.getItems().setAll(TipoDocumento.values());
+
         // Configurar columnas
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colDocumento.setCellValueFactory(new PropertyValueFactory<>("documento"));
+        colTipoDoc.setCellValueFactory(new PropertyValueFactory<>("tipoDocumentoFormateado"));
+        colDocumento.setCellValueFactory(new PropertyValueFactory<>("numDocumento"));
         colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
@@ -46,26 +54,34 @@ public class PacientesController {
         cargarPacientes();
 
         // Listener selección tabla
-        tblPacientes.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccionado) -> {
-            if (seleccionado != null) {
-                txtNombre.setText(seleccionado.getNombre());
-                txtDocumento.setText(seleccionado.getDocumento());
-                txtTelefono.setText(seleccionado.getTelefono());
-                txtDireccion.setText(seleccionado.getDireccion());
-                txtCorreo.setText(seleccionado.getCorreo());
-                txtFechaNacimiento.setText(seleccionado.getFechaNacimiento());
-                txtEnfermedad.setText(seleccionado.getEnfermedad());
+        tblPacientes.getSelectionModel().selectedItemProperty().addListener((obs, anterior, sel) -> {
+            if (sel != null) {
+                txtNombre.setText(sel.getNombre());
+                cmbTipoDoc.setValue(sel.getTipoDocumento());
+                txtDocumento.setText(sel.getNumDocumento());
+                txtTelefono.setText(sel.getTelefono());
+                txtDireccion.setText(sel.getDireccion());
+                txtCorreo.setText(sel.getCorreo());
+                txtFechaNacimiento.setText(sel.getFechaNacimiento());
+                txtEnfermedad.setText(sel.getEnfermedad());
             } else {
                 limpiarCampos();
             }
         });
+
         configurarValidaciones();
     }
 
     // GUARDAR
     @FXML
     private void onGuardarPaciente() {
+
         if (!validarCampos()) return;
+
+        if (cmbTipoDoc.getValue() == null) {
+            mostrarAlerta("Debe seleccionar un tipo de documento");
+            return;
+        }
 
         if (pacienteYaExiste(txtCorreo.getText(), txtDocumento.getText(), txtTelefono.getText())) {
             mostrarAlerta("Advertencia",
@@ -76,6 +92,7 @@ public class PacientesController {
 
         Paciente p = new Paciente(
                 txtNombre.getText(),
+                cmbTipoDoc.getValue(),
                 txtDocumento.getText(),
                 txtTelefono.getText(),
                 txtDireccion.getText(),
@@ -94,9 +111,9 @@ public class PacientesController {
     // ELIMINAR
     @FXML
     private void onEliminarPaciente() {
-        Paciente seleccionado = tblPacientes.getSelectionModel().getSelectedItem();
+        Paciente sel = tblPacientes.getSelectionModel().getSelectedItem();
 
-        if (seleccionado == null) {
+        if (sel == null) {
             mostrarAlerta("Debe seleccionar un paciente para eliminar");
             return;
         }
@@ -104,11 +121,11 @@ public class PacientesController {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Confirmar Eliminación");
         confirm.setHeaderText("¿Desea eliminar este paciente?");
-        confirm.setContentText(seleccionado.getNombre() + " - " + seleccionado.getDocumento());
+        confirm.setContentText(sel.getNombre() + " - " + sel.getNumDocumento());
 
-        confirm.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                pacienteRepository.eliminarPaciente(seleccionado);
+        confirm.showAndWait().ifPresent(res -> {
+            if (res == ButtonType.OK) {
+                pacienteRepository.eliminarPaciente(sel);
                 cargarPacientes();
                 mostrarAlerta("Éxito", "Paciente eliminado", Alert.AlertType.INFORMATION);
             }
@@ -118,22 +135,28 @@ public class PacientesController {
     // ACTUALIZAR
     @FXML
     private void onActualizarPaciente() {
-        Paciente seleccionado = tblPacientes.getSelectionModel().getSelectedItem();
+        Paciente sel = tblPacientes.getSelectionModel().getSelectedItem();
 
-        if (seleccionado == null) {
+        if (sel == null) {
             mostrarAlerta("Debe seleccionar un paciente para actualizar");
             return;
         }
 
-        seleccionado.setNombre(txtNombre.getText());
-        seleccionado.setDocumento(txtDocumento.getText());
-        seleccionado.setTelefono(txtTelefono.getText());
-        seleccionado.setDireccion(txtDireccion.getText());
-        seleccionado.setCorreo(txtCorreo.getText());
-        seleccionado.setFechaNacimiento(txtFechaNacimiento.getText());
-        seleccionado.setEnfermedad(txtEnfermedad.getText());
+        if (cmbTipoDoc.getValue() == null) {
+            mostrarAlerta("Debe seleccionar un tipo de documento");
+            return;
+        }
 
-        pacienteRepository.actualizarPaciente(seleccionado);
+        sel.setNombre(txtNombre.getText());
+        sel.setTipoDocumento(cmbTipoDoc.getValue());
+        sel.setNumDocumento(txtDocumento.getText());
+        sel.setTelefono(txtTelefono.getText());
+        sel.setDireccion(txtDireccion.getText());
+        sel.setCorreo(txtCorreo.getText());
+        sel.setFechaNacimiento(txtFechaNacimiento.getText());
+        sel.setEnfermedad(txtEnfermedad.getText());
+
+        pacienteRepository.actualizarPaciente(sel);
         tblPacientes.refresh();
 
         mostrarAlerta("Éxito", "Paciente actualizado correctamente", Alert.AlertType.INFORMATION);
@@ -144,13 +167,14 @@ public class PacientesController {
         limpiarCampos();
     }
 
-    // MÉTODOS AUXILIARES
+    // AUXILIARES
     private void cargarPacientes() {
         tblPacientes.setItems(pacienteRepository.getPacientes());
     }
 
     private void limpiarCampos() {
         txtNombre.clear();
+        cmbTipoDoc.setValue(null);
         txtDocumento.clear();
         txtTelefono.clear();
         txtDireccion.clear();
@@ -168,6 +192,10 @@ public class PacientesController {
     private boolean validarCampos() {
         if (txtNombre.getText().isEmpty()) {
             mostrarAlerta("El nombre es obligatorio");
+            return false;
+        }
+        if (cmbTipoDoc.getValue() == null) {
+            mostrarAlerta("Debe seleccionar un tipo de documento");
             return false;
         }
         if (!txtDocumento.getText().matches("\\d{5,}")) {
@@ -195,49 +223,42 @@ public class PacientesController {
 
     private void configurarValidaciones() {
 
-        // Solo letras y espacios (nombre)
         txtNombre.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.matches("[a-zA-ZÁÉÍÓÚáéíóúÑñ\\s]*")) {
                 txtNombre.setText(oldVal);
             }
         });
 
-        // Solo números (documento)
         txtDocumento.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.matches("\\d*")) {
                 txtDocumento.setText(oldVal);
             }
         });
 
-        // Solo números (teléfono)
         txtTelefono.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.matches("\\d*")) {
                 txtTelefono.setText(oldVal);
             }
         });
 
-        // Letras + números + espacios (dirección)
         txtDireccion.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.matches("[a-zA-Z0-9ÁÉÍÓÚáéíóúÑñ\\s\\-#\\.]*")) {
                 txtDireccion.setText(oldVal);
             }
         });
 
-        // Correo: permite letras, números y símbolos básicos
         txtCorreo.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.matches("[A-Za-z0-9@._+-]*")) {
                 txtCorreo.setText(oldVal);
             }
         });
 
-        // Fecha: solo números y guiones (YYYY-MM-DD)
         txtFechaNacimiento.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.matches("[0-9\\-]*")) {
                 txtFechaNacimiento.setText(oldVal);
             }
         });
 
-        // Enfermedad: solo letras, espacios y números
         txtEnfermedad.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.matches("[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\\s]*")) {
                 txtEnfermedad.setText(oldVal);

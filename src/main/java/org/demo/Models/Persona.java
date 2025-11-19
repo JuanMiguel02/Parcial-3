@@ -4,14 +4,16 @@ public abstract class Persona {
     private static int contador = 1;
     private int id;
     private String nombre;
-    private String documento;
+    private TipoDocumento tipoDocumento;
+    private String numDocumento;
     private String telefono;
     private String direccion;
     private String correo;
 
-    public Persona(String nombre, String documento, String telefono, String direccion, String correo) {
+    public Persona(String nombre, TipoDocumento documento, String numDocumento, String telefono, String direccion, String correo) {
         this.id = contador++;
-        this.documento = documento;
+        this.tipoDocumento = documento;
+        this.numDocumento = numDocumento;
         this.direccion = direccion;
         this.telefono = telefono;
         this.nombre = nombre;
@@ -44,12 +46,12 @@ public abstract class Persona {
         this.telefono = telefono;
     }
 
-    public String getDocumento() {
-        return documento;
+    public String getNumDocumento() {
+        return numDocumento;
     }
 
-    public void setDocumento(String documento) {
-        this.documento = documento;
+    public void setNumDocumento(String numDocumento) {
+        this.numDocumento = numDocumento;
     }
 
     public String getCorreo() {
@@ -68,11 +70,31 @@ public abstract class Persona {
         this.id = id;
     }
 
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        Persona.contador = contador;
+    }
+
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public String getTipoDocumentoFormateado(){
+        return tipoDocumento.getTipoDocumento();
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumentoo) {
+        this.tipoDocumento = tipoDocumentoo;
+    }
+
     @Override
     public String toString() {
         return " " +
                   nombre +
-                ", documento: " + documento +
+                ", numDocumento: " + numDocumento +
                 ", teléfono: " + telefono +
                 ", dirección: " + direccion +
                 ", correo: " + correo + "\n"

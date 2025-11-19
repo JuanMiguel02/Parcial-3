@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.demo.Models.Medico;
+import org.demo.Models.TipoDocumento;
 import org.demo.Repositories.MedicoRepository;
 
 import static org.demo.Utils.AlertHelper.mostrarAlerta;
@@ -18,9 +19,12 @@ public class MedicosController {
     @FXML private TextField txtEspecialidad;
     @FXML private TextField txtConsultorio;
 
+    @FXML private ComboBox<TipoDocumento> cbTipoDocumento;
+
     @FXML private TableView<Medico> tblMedicos;
 
     @FXML private TableColumn<Medico, String> colNombre;
+    @FXML private TableColumn<Medico, String> colTipoDocumento;
     @FXML private TableColumn<Medico, String> colDocumento;
     @FXML private TableColumn<Medico, String> colTelefono;
     @FXML private TableColumn<Medico, String> colDireccion;
@@ -32,10 +36,16 @@ public class MedicosController {
 
     @FXML
     public void initialize() {
+
         medicoRepository = MedicoRepository.getInstancia();
 
+        // Cargar enum en ComboBox
+        cbTipoDocumento.getItems().setAll(TipoDocumento.values());
+
+        // Configuración de columnas
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colDocumento.setCellValueFactory(new PropertyValueFactory<>("documento"));
+        colTipoDocumento.setCellValueFactory(new PropertyValueFactory<>("tipoDocumentoFormateado"));
+        colDocumento.setCellValueFactory(new PropertyValueFactory<>("numDocumento"));
         colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
@@ -44,10 +54,12 @@ public class MedicosController {
 
         cargarMedicos();
 
+        // Cuando se selecciona un médico en la tabla
         tblMedicos.getSelectionModel().selectedItemProperty().addListener((obs, ant, sel) -> {
             if (sel != null) {
                 txtNombre.setText(sel.getNombre());
-                txtDocumento.setText(sel.getDocumento());
+                cbTipoDocumento.setValue(sel.getTipoDocumento());
+                txtDocumento.setText(sel.getNumDocumento());
                 txtTelefono.setText(sel.getTelefono());
                 txtDireccion.setText(sel.getDireccion());
                 txtCorreo.setText(sel.getCorreo());
@@ -57,11 +69,13 @@ public class MedicosController {
                 limpiarCampos();
             }
         });
+
         configurarValidaciones();
     }
 
     @FXML
     private void onGuardarMedico() {
+
         if (!validarCampos()) return;
 
         if (medicoRepository.existeMedicoConDocumento(txtDocumento.getText())) {
@@ -71,6 +85,7 @@ public class MedicosController {
 
         Medico medico = new Medico(
                 txtNombre.getText(),
+                cbTipoDocumento.getValue(),
                 txtDocumento.getText(),
                 txtTelefono.getText(),
                 txtDireccion.getText(),
@@ -89,21 +104,21 @@ public class MedicosController {
 
     @FXML
     private void onEliminarMedico() {
-        Medico sel = tblMedicos.getSelectionModel().getSelectedItem();
+        Medico medicoSeleccionado = tblMedicos.getSelectionModel().getSelectedItem();
 
-        if (sel == null) {
-            mostrarAlerta( "Seleccione un médico para eliminar");
+        if (medicoSeleccionado == null) {
+            mostrarAlerta("Seleccione un médico para eliminar");
             return;
         }
 
         Alert conf = new Alert(Alert.AlertType.CONFIRMATION);
         conf.setTitle("Confirmar eliminación");
         conf.setHeaderText("¿Eliminar médico?");
-        conf.setContentText("Médico: " + sel.getNombre());
+        conf.setContentText("Médico: " + medicoSeleccionado.getNombre());
 
         conf.showAndWait().ifPresent(res -> {
             if (res == ButtonType.OK) {
-                medicoRepository.eliminarMedico(sel);
+                medicoRepository.eliminarMedico(medicoSeleccionado);
                 cargarMedicos();
                 mostrarAlerta("Éxito", "Médico eliminado correctamente", Alert.AlertType.INFORMATION);
             }
@@ -112,22 +127,26 @@ public class MedicosController {
 
     @FXML
     private void onActualizarMedico() {
-        Medico sel = tblMedicos.getSelectionModel().getSelectedItem();
 
-        if (sel == null) {
-            mostrarAlerta( "Seleccione un médico para actualizar");
+        Medico medicoSeleccionado = tblMedicos.getSelectionModel().getSelectedItem();
+
+        if (medicoSeleccionado == null) {
+            mostrarAlerta("Seleccione un médico para actualizar");
             return;
         }
 
-        sel.setNombre(txtNombre.getText());
-        sel.setDocumento(txtDocumento.getText());
-        sel.setTelefono(txtTelefono.getText());
-        sel.setDireccion(txtDireccion.getText());
-        sel.setCorreo(txtCorreo.getText());
-        sel.setEspecialidad(txtEspecialidad.getText());
-        sel.setConsultorio(txtConsultorio.getText());
+        if (!validarCampos()) return;
 
-        medicoRepository.actualizarMedico(sel);
+        medicoSeleccionado.setNombre(txtNombre.getText());
+        medicoSeleccionado.setTipoDocumento(cbTipoDocumento.getValue());
+        medicoSeleccionado.setNumDocumento(txtDocumento.getText());
+        medicoSeleccionado.setTelefono(txtTelefono.getText());
+        medicoSeleccionado.setDireccion(txtDireccion.getText());
+        medicoSeleccionado.setCorreo(txtCorreo.getText());
+        medicoSeleccionado.setEspecialidad(txtEspecialidad.getText());
+        medicoSeleccionado.setConsultorio(txtConsultorio.getText());
+
+        medicoRepository.actualizarMedico(medicoSeleccionado);
 
         tblMedicos.refresh();
         mostrarAlerta("Éxito", "Médico actualizado correctamente", Alert.AlertType.INFORMATION);
@@ -142,6 +161,9 @@ public class MedicosController {
         tblMedicos.setItems(medicoRepository.getMedicos());
     }
 
+    // -------------------------------------------------------------
+    // VALIDACIONES
+    // -------------------------------------------------------------
     private boolean validarCampos() {
         if (txtNombre.getText().isEmpty()) { txtNombre.requestFocus(); mostrarAlerta("Nombre obligatorio"); return false; }
         if (txtDocumento.getText().isEmpty()) { txtDocumento.requestFocus(); mostrarAlerta("Documento obligatorio"); return false; }
@@ -154,15 +176,6 @@ public class MedicosController {
         return true;
     }
 
-    private void limpiarCampos() {
-        txtNombre.clear();
-        txtDocumento.clear();
-        txtTelefono.clear();
-        txtDireccion.clear();
-        txtCorreo.clear();
-        txtEspecialidad.clear();
-        txtConsultorio.clear();
-    }
 
     private void configurarValidaciones() {
 
@@ -216,4 +229,16 @@ public class MedicosController {
         });
     }
 
+
+    private void limpiarCampos() {
+        txtNombre.clear();
+        cbTipoDocumento.setValue(null);
+        txtDocumento.clear();
+        txtTelefono.clear();
+        txtDireccion.clear();
+        txtCorreo.clear();
+        txtEspecialidad.clear();
+        txtConsultorio.clear();
+        tblMedicos.getSelectionModel().clearSelection();
+    }
 }

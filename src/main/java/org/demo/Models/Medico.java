@@ -6,8 +6,8 @@ public class Medico extends Persona{
     private String horario;
 
 
-    public Medico(String nombre, String documento, String telefono, String direccion, String correo, String especialidad, String consultorio){
-        super(nombre, documento, telefono, direccion, correo);
+    public Medico(String nombre, TipoDocumento tipoDocumento, String documento, String telefono, String direccion, String correo, String especialidad, String consultorio){
+        super(nombre, tipoDocumento, documento, telefono, direccion, correo);
         this.consultorio = consultorio;
         this.especialidad = especialidad;
     }

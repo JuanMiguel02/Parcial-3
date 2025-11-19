@@ -46,7 +46,7 @@
                            </font></Label>
 
                                 <HBox spacing="10">
-                                    <TextField fx:id="txtBuscarDocumento" prefHeight="25.0" prefWidth="313.0" promptText="Ingrese el documento del paciente" />
+                                    <TextField fx:id="txtBuscarDocumento" prefHeight="25.0" prefWidth="313.0" promptText="Ingrese el numDocumento del paciente" />
                                     <Button onAction="#onBuscarPaciente" prefHeight="47.0" prefWidth="64.0" style="-fx-background-color: #3498DB;" text="Buscar">
                               <font>
                                  <Font name="Trebuchet MS Bold" size="12.0" />

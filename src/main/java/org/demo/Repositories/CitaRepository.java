@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import org.demo.Models.Cita;
 import org.demo.Models.Medico;
 import org.demo.Models.Paciente;
+import org.demo.Models.TipoDocumento;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -93,16 +94,16 @@ public class CitaRepository {
     private void cargarDatosEjemplo() {
 
         // Pacientes de ejemplo
-        Paciente pa1 = new Paciente("Julian Casablancas", "2131231", "312312", "Armenia", "julian@gmail.com", "08/30/2000", "Dolor de Cabeza");
-        Paciente pa2 = new Paciente("Jonathan Davis", "213532", "31253212", "Armenia", "jonathan@gmail.com", "08/30/2001", "Dolor de Rodilla");
+        Paciente pa1 = new Paciente("Julian Casablancas", TipoDocumento.CC ,"2131231", "312312", "Armenia", "julian@gmail.com", "08/30/2000", "Dolor de Cabeza");
+        Paciente pa2 = new Paciente("Jonathan Davis",TipoDocumento.CC, "213532", "31253212", "Armenia", "jonathan@gmail.com", "08/30/2001", "Dolor de Rodilla");
         PacienteRepository.getInstancia().guardarPaciente(pa1);
         PacienteRepository.getInstancia().guardarPaciente(pa2);
 
         // Médicos de ejemplo
-        Medico m1 = new Medico("Dr. Carlos Ramírez", "108654", "3101234967", "Armenia",
+        Medico m1 = new Medico("Dr. Carlos Ramírez",TipoDocumento.CC ,"108654", "3101234967", "Armenia",
                 "carlosR@hospital.com", "Cardiología", "Consultorio 12");
 
-        Medico m2 = new Medico("Dra. Lola Mento", "2023458", "3111876543", "Armenia",
+        Medico m2 = new Medico("Dra. Lola Mento", TipoDocumento.CC ,"2023458", "3111876543", "Armenia",
                 "lola@hospital.com", "Pediatría", "Consultorio 5");
 
         MedicoRepository.getInstancia().guardarMedico(m1);

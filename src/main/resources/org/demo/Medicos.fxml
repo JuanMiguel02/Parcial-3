@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -19,7 +20,7 @@
     <children>
 
         <!-- === FORMULARIO DE MÉDICOS === -->
-        <AnchorPane prefHeight="360.0" style="-fx-border-color: #BDC3C7; -fx-border-radius: 5;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="20.0">
+        <AnchorPane prefHeight="381.0" prefWidth="884.0" style="-fx-border-color: #BDC3C7; -fx-border-radius: 5;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="20.0">
             <children>
 
                 <GridPane hgap="20" vgap="20" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
@@ -35,51 +36,58 @@
                     </Label>
                     <TextField fx:id="txtNombre" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                    <!-- Documento -->
-                    <Label text="Documento:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <!-- Tipo de Documento (NUEVO, SIN CAMBIAR NADA) -->
+                    <Label text="Tipo Documento:" GridPane.columnIndex="0" GridPane.rowIndex="1">
                         <font><Font size="16.0" /></font>
                     </Label>
-                    <TextField fx:id="txtDocumento" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="cbTipoDocumento" prefHeight="25.0" prefWidth="416.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <!-- Documento -->
+                    <Label text="Documento:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <font><Font size="16.0" /></font>
+                    </Label>
+                    <TextField fx:id="txtDocumento" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                     <!-- Teléfono -->
-                    <Label text="Teléfono:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label text="Teléfono:" GridPane.columnIndex="0" GridPane.rowIndex="3">
                         <font><Font size="16.0" /></font>
                     </Label>
-                    <TextField fx:id="txtTelefono" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <TextField fx:id="txtTelefono" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                     <!-- Dirección -->
-                    <Label text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                    <Label text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="4">
                         <font><Font size="16.0" /></font>
                     </Label>
-                    <TextField fx:id="txtDireccion" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <TextField fx:id="txtDireccion" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                     <!-- Correo -->
-                    <Label text="Correo:" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                    <Label text="Correo:" GridPane.columnIndex="0" GridPane.rowIndex="5">
                         <font><Font size="16.0" /></font>
                     </Label>
-                    <TextField fx:id="txtCorreo" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <TextField fx:id="txtCorreo" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
                     <!-- Especialidad -->
-                    <Label text="Especialidad:" GridPane.columnIndex="0" GridPane.rowIndex="5">
+                    <Label text="Especialidad:" GridPane.columnIndex="0" GridPane.rowIndex="6">
                         <font><Font size="16.0" /></font>
                     </Label>
-                    <TextField fx:id="txtEspecialidad" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <TextField fx:id="txtEspecialidad" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
                     <!-- Consultorio -->
-                    <Label text="Consultorio:" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                    <Label text="Consultorio:" GridPane.columnIndex="0" GridPane.rowIndex="7">
                         <font><Font size="16.0" /></font>
                     </Label>
-                    <TextField fx:id="txtConsultorio" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+                    <TextField fx:id="txtConsultorio" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
 
                 </GridPane>
             </children>
@@ -91,28 +99,29 @@
 
                 <Button onAction="#onGuardarMedico" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #2ECC71; -fx-background-radius: 8;" text="Guardar">
                     <cursor><Cursor fx:constant="HAND" /></cursor>
-               <font>
-                  <Font name="Trebuchet MS" size="12.0" />
-               </font>
+                    <font><Font name="Trebuchet MS Bold" size="14.0" /></font>
                 </Button>
 
                 <Button onAction="#onEliminarMedico" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #E74C3C; -fx-background-radius: 8;" text="Eliminar">
                     <cursor><Cursor fx:constant="HAND" /></cursor>
+                    <font><Font name="Trebuchet MS Bold" size="14.0" /></font>
                 </Button>
 
                 <Button onAction="#onActualizarMedico" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #3498DB; -fx-background-radius: 8;" text="Actualizar">
                     <cursor><Cursor fx:constant="HAND" /></cursor>
+                    <font><Font name="Trebuchet MS Bold" size="14.0" /></font>
                 </Button>
 
                 <Button onAction="#onLimpiarCampos" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #BDC3C7; -fx-background-radius: 8;" text="Limpiar Campos">
                     <cursor><Cursor fx:constant="HAND" /></cursor>
+                    <font><Font name="Trebuchet MS Bold" size="14.0" /></font>
                 </Button>
 
             </children>
         </VBox>
 
         <!-- === TABLA DE MÉDICOS === -->
-        <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="400.0">
+        <ScrollPane fitToHeight="true" fitToWidth="true" layoutY="427.0" prefHeight="375.0" prefWidth="1114.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="427.0">
             <content>
                 <AnchorPane>
                     <children>
@@ -121,6 +130,7 @@
 
                             <columns>
                                 <TableColumn fx:id="colNombre" prefWidth="150" text="Nombre" />
+                                <TableColumn fx:id="colTipoDocumento" prefWidth="150" text="Tipo Documento" />
                                 <TableColumn fx:id="colDocumento" prefWidth="120" text="Documento" />
                                 <TableColumn fx:id="colTelefono" prefWidth="120" text="Teléfono" />
                                 <TableColumn fx:id="colDireccion" prefWidth="150" text="Dirección" />

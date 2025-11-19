@@ -4,8 +4,8 @@ public class Paciente extends Persona{
     private String fechaNacimiento;
     private String enfermedad;
 
-    public Paciente(String nombre, String documento, String telefono, String direccion, String correo, String fechaNacimiento, String enfermedad) {
-        super(nombre, documento, telefono, direccion, correo);
+    public Paciente(String nombre, TipoDocumento tipoDocumento, String documento, String telefono, String direccion, String correo, String fechaNacimiento, String enfermedad) {
+        super(nombre, tipoDocumento, documento, telefono, direccion, correo);
         this.fechaNacimiento = fechaNacimiento;
         this.enfermedad = enfermedad;
     }
@@ -30,7 +30,7 @@ public class Paciente extends Persona{
     public String toString() {
         return "Paciente: " +
                 getNombre() +
-                ", documento: " + getDocumento() +
+                ", documento: " + getNumDocumento() +
                 ", teléfono: " + getTelefono() +
                 ", dirección: " + getDireccion() +
                 ", correo: " + getCorreo() + '\n';
